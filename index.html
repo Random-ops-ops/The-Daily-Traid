@@ -405,6 +405,7 @@ const DEFAULT_STATE = {
   streak:0,
   today: null,          // date string
   roundsToday:[false,false,false],
+  anyCompletionToday:false,
   lastCheckedDate: null,
   ownedEggs: [],         // {uid, dragonId, tier}
   activeUid: null,
@@ -442,11 +443,12 @@ function rollDay(){
     return;
   }
   if(state.lastCheckedDate !== t){
-    const allDone = state.roundsToday.every(Boolean);
+    const allDone = state.anyCompletionToday;
     if(!allDone){
       applyPenalty();
     }
     state.roundsToday = [false,false,false];
+    state.anyCompletionToday = false;
     state.lastCheckedDate = t;
     state.today = t;
     saveState();
@@ -465,7 +467,10 @@ function completeRound(idx){
   state.roundsToday[idx] = true;
   addExp(EXP_PER_ROUND);
   if(state.roundsToday.every(Boolean)){
-    advanceStreak();
+    const evolved = advanceStreak();
+    state.roundsToday = [false,false,false];
+    state.anyCompletionToday = true;
+    if(!evolved) showToast(`Day complete! Streak now ${state.streak}.`);
   }
   saveState();
   render();
@@ -484,6 +489,7 @@ function addExp(amount){
 }
 function advanceStreak(){
   state.streak += 1;
+  let toastShown = false;
   if(state.activeUid){
     const stage = stageForStreak(state.streak);
     if(stage.key === 'full'){
@@ -494,11 +500,17 @@ function advanceStreak(){
         state.activeUid = null;
         state.streak = 0;
         showToast(`${DRAGON_BY_ID[egg.dragonId].name} joined your DragonDex!`);
+        toastShown = true;
       }
     } else {
-      showToast(`Evolved to ${stage.label}!`);
+      const prevStage = stageForStreak(state.streak - 1);
+      if(prevStage.key !== stage.key){
+        showToast(`Evolved to ${stage.label}!`);
+        toastShown = true;
+      }
     }
   }
+  return toastShown;
 }
 function buyEgg(dragonId){
   const d = DRAGON_BY_ID[dragonId];
