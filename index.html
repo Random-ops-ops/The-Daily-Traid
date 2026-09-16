@@ -745,6 +745,10 @@ document.querySelectorAll('.tab-btn').forEach(btn=>{
 $('#overlay').addEventListener('click', (e)=>{ if(e.target.id==='overlay') closePanel(); });
 
 rollDay();
+if(state.roundsToday.every(Boolean)){
+  state.roundsToday = [false,false,false];
+  state.anyCompletionToday = true;
+}
 render();
 saveState();
 })();
