@@ -71,8 +71,31 @@ h1,h2,h3,.display{font-family:'Cinzel',serif;letter-spacing:0.01em;}
   border:1px solid rgba(232,184,75,0.35);
   padding:7px 12px 7px 8px; border-radius:999px;
   font-weight:700; font-size:14px; color:var(--gold-bright);
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: tabular-nums; font-family:inherit;
 }
+.reset-btn{
+  flex:none; width:34px; height:34px; border-radius:50%;
+  background:rgba(229,72,77,0.1); border:1px solid rgba(229,72,77,0.35);
+  color:var(--danger); display:flex; align-items:center; justify-content:center;
+  cursor:pointer; padding:0;
+}
+.reset-btn svg{width:16px;height:16px;}
+.reset-btn:active{transform:scale(0.92);}
+
+/* ---------- Account switcher ---------- */
+.account-row{display:flex; align-items:center; gap:6px; margin-top:10px; overflow-x:auto; padding-bottom:1px; scrollbar-width:none;}
+.account-row::-webkit-scrollbar{display:none;}
+.acct-chip{
+  flex:none; display:flex; align-items:center; gap:5px;
+  background:rgba(255,255,255,0.04); border:1px solid var(--line); color:var(--parchment-dim);
+  font-family:inherit; font-size:11px; font-weight:600; padding:6px 10px; border-radius:999px; cursor:pointer;
+  white-space:nowrap; transition:all .15s;
+}
+.acct-chip .acct-dot{width:6px;height:6px;border-radius:50%; background:currentColor; opacity:0.4;}
+.acct-chip.active{background:linear-gradient(135deg, rgba(232,184,75,0.22), rgba(232,184,75,0.06)); border-color:rgba(232,184,75,0.5); color:var(--gold-bright);}
+.acct-chip.active .acct-dot{background:var(--gold-bright); opacity:1; box-shadow:0 0 6px var(--gold-bright);}
+.acct-chip.acct-add{color:var(--parchment-dim); border-style:dashed;}
+.acct-chip:active{transform:scale(0.95);}
 .coin-pill svg{width:20px;height:20px;}
 .level-row{display:flex; align-items:center; gap:10px;}
 .level-badge{
@@ -111,6 +134,7 @@ main{padding:18px 16px 8px; max-width:520px; margin:0 auto;}
 .stage-dot{width:7px;height:7px;border-radius:50%; background:rgba(255,255,255,0.14);}
 .stage-dot.on{background:var(--gold); box-shadow:0 0 8px var(--gold);}
 .penalty-note{font-size:11.5px; color:var(--ember); margin-top:10px; display:flex; align-items:center; justify-content:center; gap:5px;}
+.upgrade-badge{display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:700; letter-spacing:0.03em; color:var(--gold-bright); background:linear-gradient(135deg, rgba(232,184,75,0.2), rgba(232,184,75,0.06)); border:1px solid rgba(232,184,75,0.4); padding:4px 10px; border-radius:999px; margin-top:8px;}
 
 /* ---------- Routine ---------- */
 .section-title{font-size:13px; font-weight:700; color:var(--parchment-dim); letter-spacing:0.04em; margin:26px 0 10px 4px; display:flex; align-items:center; gap:8px;}
@@ -218,6 +242,65 @@ main{padding:18px 16px 8px; max-width:520px; margin:0 auto;}
   display:flex; align-items:center; gap:7px; white-space:nowrap;
 }
 .toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ---------- Confirm modal ---------- */
+.confirm-overlay{
+  position:fixed; inset:0; z-index:90; background:rgba(6,4,10,0.78);
+  display:flex; align-items:center; justify-content:center; padding:20px;
+  opacity:0; pointer-events:none; transition:opacity .2s;
+}
+.confirm-overlay.open{opacity:1; pointer-events:auto;}
+.confirm-box{
+  width:100%; max-width:340px; background:var(--panel-2); border:1px solid var(--line);
+  border-radius:var(--radius-lg); padding:22px 20px 18px; text-align:center;
+  box-shadow:var(--shadow-deep); transform:scale(0.92); transition:transform .2s;
+}
+.confirm-overlay.open .confirm-box{transform:scale(1);}
+.confirm-icon{width:46px;height:46px; margin:0 auto 10px; border-radius:50%; background:rgba(255,122,74,0.12); display:flex; align-items:center; justify-content:center;}
+.confirm-icon svg{width:24px;height:24px;}
+.confirm-title{font-family:'Cinzel',serif; font-size:17px; font-weight:700; color:var(--parchment); margin-bottom:8px;}
+.confirm-body{font-size:12.5px; color:var(--parchment-dim); line-height:1.5; margin-bottom:18px;}
+.confirm-actions{display:flex; flex-direction:column; gap:9px;}
+.confirm-btn{
+  width:100%; padding:12px 0; border-radius:11px; border:none; font-family:inherit;
+  font-weight:700; font-size:13.5px; cursor:pointer;
+}
+.confirm-cancel{background:rgba(255,255,255,0.06); color:var(--parchment); border:1px solid var(--line);}
+.confirm-danger{background:linear-gradient(135deg,#ff6b60,var(--danger)); color:#2a0808;}
+.confirm-btn:active{transform:scale(0.97);}
+
+/* ---------- Workout Mode ---------- */
+.workout-overlay{
+  position:fixed; inset:0; z-index:95; background:var(--ink);
+  display:flex; flex-direction:column;
+  transform:translateY(100%); transition:transform .3s cubic-bezier(.2,.85,.25,1);
+}
+.workout-overlay.open{transform:translateY(0);}
+#workoutSheet{flex:1; display:flex; flex-direction:column; min-height:0;}
+.workout-head{display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--line); flex:none;}
+.workout-close{background:none;border:none;color:var(--parchment-dim);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.workout-close svg{width:16px;height:16px;}
+.workout-body{flex:1; overflow-y:auto; padding:18px 16px calc(24px + env(safe-area-inset-bottom)); display:flex; flex-direction:column; gap:16px; max-width:480px; margin:0 auto; width:100%;}
+.order-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+.order-chip{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius-md); padding:18px 10px; text-align:center; cursor:pointer; position:relative; font-weight:600; font-size:13px;}
+.order-chip .order-num{position:absolute; top:6px; left:8px; font-size:10px; font-weight:700; color:var(--gold-bright); background:rgba(232,184,75,0.18); border-radius:50%; width:18px; height:18px; display:none; align-items:center; justify-content:center;}
+.order-chip.picked{border-color:var(--gold); background:linear-gradient(135deg, rgba(232,184,75,0.12), var(--panel));}
+.camera-wrap{width:100%; aspect-ratio:4/3; background:#000; border-radius:var(--radius-md); overflow:hidden; position:relative; border:1px solid var(--line);}
+.camera-wrap video{width:100%; height:100%; object-fit:cover; transform:scaleX(-1);}
+.camera-off{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--parchment-dim); font-size:12px; text-align:center; padding:20px; background:var(--panel);}
+.ex-title{font-family:'Cinzel',serif; font-size:18px; color:var(--gold-bright); text-align:center;}
+.ex-sub{font-size:12px; color:var(--parchment-dim); text-align:center; line-height:1.5;}
+.timer-num{font-family:'Cinzel',serif; font-size:44px; font-weight:700; color:var(--parchment); text-align:center;}
+.big-btn{width:100%; padding:14px 0; border-radius:14px; border:none; font-family:inherit; font-weight:700; font-size:15px; cursor:pointer; background:linear-gradient(135deg,var(--gold),#c9942a); color:#1a1206;}
+.big-btn:disabled{opacity:0.4; cursor:default;}
+.big-btn:active:not(:disabled){transform:scale(0.98);}
+.counter-row{display:flex; align-items:center; justify-content:center; gap:18px;}
+.counter-btn{width:60px; height:60px; border-radius:50%; background:var(--panel-2); border:2px solid var(--gold); color:var(--gold-bright); font-size:26px; font-weight:700; display:flex; align-items:center; justify-content:center; cursor:pointer; font-family:inherit;}
+.counter-btn:active{transform:scale(0.92);}
+.counter-num{font-family:'Cinzel',serif; font-size:34px; font-weight:700; min-width:104px; text-align:center;}
+.bicycle-row{display:flex; gap:14px;}
+.bicycle-side{flex:1; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius-md); padding:14px 8px; text-align:center; display:flex; flex-direction:column; gap:8px; align-items:center;}
+.bicycle-side-label{font-size:11px; color:var(--parchment-dim); font-weight:700; letter-spacing:0.04em;}
 </style>
 </head>
 <body>
@@ -231,9 +314,14 @@ main{padding:18px 16px 8px; max-width:520px; margin:0 auto;}
         <div class="brand-sub">DRAGON TAMER</div>
       </div>
     </div>
-    <div class="coin-pill" id="coinPill">
-      <svg viewBox="0 0 24 24"><defs><radialGradient id="coinG" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#fff3c9"/><stop offset="0.5" stop-color="#e8b84b"/><stop offset="1" stop-color="#a97a1f"/></radialGradient></defs><circle cx="12" cy="12" r="10" fill="url(#coinG)" stroke="#8a611a" stroke-width="1"/><text x="12" y="16.5" font-size="11" font-weight="700" text-anchor="middle" fill="#6b4a12" font-family="Cinzel,serif">T</text></svg>
-      <span id="coinCount">50</span>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <button class="coin-pill" id="coinPill" style="cursor:default;">
+        <svg viewBox="0 0 24 24"><defs><radialGradient id="coinG" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#fff3c9"/><stop offset="0.5" stop-color="#e8b84b"/><stop offset="1" stop-color="#a97a1f"/></radialGradient></defs><circle cx="12" cy="12" r="10" fill="url(#coinG)" stroke="#8a611a" stroke-width="1"/><text x="12" y="16.5" font-size="11" font-weight="700" text-anchor="middle" fill="#6b4a12" font-family="Cinzel,serif">T</text></svg>
+        <span id="coinCount">50</span>
+      </button>
+      <button class="reset-btn" id="resetBtn" aria-label="Reset progress">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+      </button>
     </div>
   </div>
   <div class="level-row">
@@ -245,6 +333,7 @@ main{padding:18px 16px 8px; max-width:520px; margin:0 auto;}
     <svg class="streak-flame" viewBox="0 0 24 24"><path d="M12 2c1 3-2 4-2 7 0 1.7 1.3 3 3 3s3-1.3 3-3c2 2 3 4.5 3 7a7 7 0 1 1-14 0c0-4 2-6 3-9 1 1 1.5 2 1.5 3C9.5 6 10.5 3.5 12 2Z" fill="#ff7a4a"/></svg>
     <span>Streak: <span class="streak-num" id="streakNum">0</span> days</span>
   </div>
+  <div class="account-row" id="accountRow"></div>
 </header>
 
 <main>
@@ -257,6 +346,7 @@ main{padding:18px 16px 8px; max-width:520px; margin:0 auto;}
       <svg viewBox="0 0 24 24" width="13" height="13"><path d="M12 2 2 20h20L12 2Zm0 6v6m0 3h.01" stroke="#ff7a4a" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
       <span>Miss any round and this dragon reverts to an egg.</span>
     </div>
+    <div id="upgradeBadge"></div>
   </div>
 
   <div class="section-title"><span>TODAY'S ROUTINE</span><span class="rule"></span></div>
@@ -288,9 +378,30 @@ main{padding:18px 16px 8px; max-width:520px; margin:0 auto;}
 
 <div class="toast" id="toast"></div>
 
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#ff7a4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 20h20L12 2Zm0 6v6m0 3h.01"/></svg>
+    </div>
+    <div class="confirm-title">Reset all progress?</div>
+    <div class="confirm-body">This will permanently erase this account's level, EXP, Triad Coins, streak, owned eggs, active dragon, and DragonDex. This cannot be undone.</div>
+    <div class="confirm-actions">
+      <button class="confirm-btn confirm-cancel" id="confirmCancel">Cancel</button>
+      <button class="confirm-btn confirm-danger" id="confirmDanger">Reset Everything</button>
+    </div>
+  </div>
+</div>
+
+<div class="workout-overlay" id="workoutOverlay">
+  <div id="workoutSheet"></div>
+</div>
+
 <script>
 (function(){
 "use strict";
+
+const CLOSE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+
 
 /* ============ DATA ============ */
 const TIERS = [
@@ -396,7 +507,12 @@ function stageForStreak(streak){
   return s;
 }
 
-const ROUTINE_LABEL = "1 min plank + 10 push-ups + 10 sit-ups + 30 bicycle crunches";
+function isUpgraded(){ return state.dex.length > 0; }
+function routineLabel(){
+  return isUpgraded()
+    ? "2 min plank + 20 push-ups + 20 sit-ups + 60 bicycle crunches + 20 squats"
+    : "1 min plank + 10 push-ups + 10 sit-ups + 30 bicycle crunches";
+}
 const EXP_PER_ROUND = 10;
 
 /* ============ STATE ============ */
@@ -413,25 +529,82 @@ const DEFAULT_STATE = {
   nextUid: 1,
 };
 
-let state = loadState();
-
 function todayStr(){ return new Date().toISOString().slice(0,10); }
 
-function loadState(){
+/* ============ MULTI-ACCOUNT STORAGE ============ */
+const ACCOUNTS_KEY = 'triad_accounts_v1';
+const MAX_ACCOUNTS = 5;
+function freshAccountData(){ return structuredClone(DEFAULT_STATE); }
+
+function loadAccounts(){
   try{
-    const raw = localStorage.getItem('triad_state_v1');
-    if(!raw) return structuredClone(DEFAULT_STATE);
-    const parsed = JSON.parse(raw);
-    return Object.assign(structuredClone(DEFAULT_STATE), parsed);
-  }catch(e){
-    console.error('load failed', e);
-    return structuredClone(DEFAULT_STATE);
-  }
+    const raw = localStorage.getItem(ACCOUNTS_KEY);
+    if(raw){
+      const parsed = JSON.parse(raw);
+      if(parsed && parsed.accounts && parsed.order && parsed.order.length){
+        for(const id of parsed.order){
+          parsed.accounts[id].data = Object.assign(freshAccountData(), parsed.accounts[id].data);
+        }
+        return parsed;
+      }
+    }
+  }catch(e){ console.error('accounts load failed', e); }
+  // migrate a legacy single-save if present, else start fresh
+  let legacyData = null;
+  try{
+    const oldRaw = localStorage.getItem('triad_state_v1');
+    if(oldRaw) legacyData = Object.assign(freshAccountData(), JSON.parse(oldRaw));
+  }catch(e){}
+  const id = 'acc1';
+  return {
+    activeId: id,
+    order: [id],
+    accounts: { [id]: { name: 'Tamer 1', data: legacyData || freshAccountData() } }
+  };
 }
-function saveState(){
-  try{ localStorage.setItem('triad_state_v1', JSON.stringify(state)); }
-  catch(e){ console.error('save failed', e); }
+function saveAccounts(){
+  try{ localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accountsStore)); }
+  catch(e){ console.error('accounts save failed', e); }
 }
+function switchAccount(id){
+  if(id === accountsStore.activeId) return;
+  accountsStore.activeId = id;
+  state = accountsStore.accounts[id].data;
+  saveAccounts();
+  rollDay();
+  render();
+  renderAccounts();
+  showToast(`Switched to ${accountsStore.accounts[id].name}`);
+}
+function createAccount(){
+  if(accountsStore.order.length >= MAX_ACCOUNTS) return;
+  const n = accountsStore.order.length + 1;
+  const id = 'acc' + Date.now();
+  accountsStore.accounts[id] = { name: 'Tamer ' + n, data: freshAccountData() };
+  accountsStore.order.push(id);
+  switchAccount(id);
+}
+function renderAccounts(){
+  const row = $('#accountRow');
+  if(!row) return;
+  const chips = accountsStore.order.map(id=>{
+    const acc = accountsStore.accounts[id];
+    const active = id === accountsStore.activeId;
+    return `<button class="acct-chip ${active?'active':''}" data-id="${id}"><span class="acct-dot"></span>${acc.name}</button>`;
+  }).join('');
+  const addBtn = accountsStore.order.length < MAX_ACCOUNTS ? `<button class="acct-chip acct-add" id="acctAdd">+ New (${accountsStore.order.length}/${MAX_ACCOUNTS})</button>` : `<span class="acct-chip" style="cursor:default;opacity:0.6;">Max ${MAX_ACCOUNTS} reached</span>`;
+  row.innerHTML = chips + addBtn;
+  row.querySelectorAll('.acct-chip[data-id]').forEach(btn=>{
+    btn.addEventListener('click', ()=> switchAccount(btn.dataset.id));
+  });
+  const addEl = $('#acctAdd');
+  if(addEl) addEl.addEventListener('click', createAccount);
+}
+
+let accountsStore = loadAccounts();
+let state = accountsStore.accounts[accountsStore.activeId].data;
+
+function saveState(){ saveAccounts(); }
 
 /* ============ DAILY ROLLOVER & PENALTY ============ */
 function rollDay(){
@@ -493,6 +666,7 @@ function advanceStreak(){
   if(state.activeUid){
     const stage = stageForStreak(state.streak);
     if(stage.key === 'full'){
+      const wasUpgraded = isUpgraded();
       const egg = state.ownedEggs.find(e=>e.uid===state.activeUid);
       if(egg){
         state.dex.push({dragonId: egg.dragonId, completedOn: todayStr()});
@@ -501,6 +675,9 @@ function advanceStreak(){
         state.streak = 0;
         showToast(`${DRAGON_BY_ID[egg.dragonId].name} joined your DragonDex!`);
         toastShown = true;
+        if(!wasUpgraded){
+          setTimeout(()=> showToast('Training intensified! Reps doubled + squats added.'), 2800);
+        }
       }
     } else {
       const prevStage = stageForStreak(state.streak - 1);
@@ -536,39 +713,123 @@ function equipEgg(uid){
 function eggSVG(d, size=64){
   const gid = 'egg'+d.id+Math.random().toString(36).slice(2,7);
   return `<svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-    <defs><linearGradient id="${gid}" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="${d.c1}"/><stop offset="1" stop-color="${d.c2}"/>
-    </linearGradient></defs>
-    <ellipse cx="50" cy="102" rx="30" ry="8" fill="black" opacity="0.25"/>
-    <path d="M50 8 C74 8 88 46 88 74 C88 100 70 112 50 112 C30 112 12 100 12 74 C12 46 26 8 50 8 Z" fill="url(#${gid})" stroke="rgba(0,0,0,0.25)" stroke-width="1.5"/>
-    <path d="M32 40 L44 54 L34 58 L48 74" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-    <ellipse cx="38" cy="34" rx="10" ry="7" fill="white" opacity="0.25"/>
+    <defs>
+      <radialGradient id="${gid}" cx="38%" cy="28%" r="80%">
+        <stop offset="0" stop-color="${d.c1}" stop-opacity="1"/>
+        <stop offset="55%" stop-color="${d.c1}"/>
+        <stop offset="100%" stop-color="${d.c2}"/>
+      </radialGradient>
+      <linearGradient id="${gid}rim" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#000" stop-opacity="0"/>
+        <stop offset="1" stop-color="#000" stop-opacity="0.35"/>
+      </linearGradient>
+    </defs>
+    <ellipse cx="50" cy="104" rx="28" ry="7" fill="black" opacity="0.28"/>
+    <path d="M50 8 C74 8 88 46 88 74 C88 100 70 112 50 112 C30 112 12 100 12 74 C12 46 26 8 50 8 Z" fill="url(#${gid})" stroke="${d.c2}" stroke-width="1" stroke-opacity="0.6"/>
+    <path d="M50 8 C74 8 88 46 88 74 C88 100 70 112 50 112 C30 112 12 100 12 74 C12 46 26 8 50 8 Z" fill="url(#${gid}rim)"/>
+    <path d="M28 88 L38 96 L30 100 L42 110" fill="none" stroke="${d.c2}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+    <path d="M64 30 L58 40 L68 44 L60 52" fill="none" stroke="${d.c2}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+    <ellipse cx="36" cy="30" rx="13" ry="8" fill="white" opacity="0.35"/>
+    <ellipse cx="33" cy="27" rx="5" ry="3" fill="white" opacity="0.5"/>
   </svg>`;
 }
 
 function dragonSVG(d, stageKey){
   const gid = 'drg'+d.id+stageKey+Math.random().toString(36).slice(2,7);
-  const scale = {baby:0.62, kid:0.75, teen:0.86, adult:0.95, full:1.05}[stageKey] || 0.6;
-  const wingOpacity = stageKey==='baby' ? 0.5 : 1;
-  const hornShow = ['teen','adult','full'].includes(stageKey);
-  const crownShow = stageKey === 'full';
-  return `<svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" style="transform:scale(${scale});transform-origin:50% 60%;">
+  const cfg = {
+    baby:  {scale:0.56, wingOp:0.55, spikes:false, horns:false, crown:false, tail:0.6, frill:false},
+    kid:   {scale:0.70, wingOp:0.75, spikes:true,  horns:false, crown:false, tail:0.8, frill:false},
+    teen:  {scale:0.83, wingOp:0.9,  spikes:true,  horns:true,  crown:false, tail:1.0, frill:true},
+    adult: {scale:0.95, wingOp:1,    spikes:true,  horns:true,  crown:false, tail:1.1, frill:true},
+    full:  {scale:1.06, wingOp:1,    spikes:true,  horns:true,  crown:true,  tail:1.2, frill:true},
+  }[stageKey] || {scale:0.56, wingOp:0.55, spikes:false, horns:false, crown:false, tail:0.6, frill:false};
+
+  return `<svg viewBox="0 0 160 170" xmlns="http://www.w3.org/2000/svg" style="transform:scale(${cfg.scale});transform-origin:50% 62%;overflow:visible;">
     <defs>
-      <linearGradient id="${gid}b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${d.c1}"/><stop offset="1" stop-color="${d.c2}"/></linearGradient>
-      <linearGradient id="${gid}w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${d.c1}" stop-opacity="0.9"/><stop offset="1" stop-color="${d.c2}" stop-opacity="0.6"/></linearGradient>
+      <linearGradient id="${gid}b" x1="0.15" y1="0" x2="0.85" y2="1">
+        <stop offset="0" stop-color="${d.c1}"/><stop offset="1" stop-color="${d.c2}"/>
+      </linearGradient>
+      <linearGradient id="${gid}belly" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#fff" stop-opacity="0.55"/><stop offset="1" stop-color="${d.c1}" stop-opacity="0.15"/>
+      </linearGradient>
+      <linearGradient id="${gid}wing" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="${d.c1}" stop-opacity="0.95"/><stop offset="1" stop-color="${d.c2}" stop-opacity="0.65"/>
+      </linearGradient>
+      <radialGradient id="${gid}glow" cx="50%" cy="35%" r="65%">
+        <stop offset="0" stop-color="#fff" stop-opacity="0.22"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="${gid}eye" cx="35%" cy="30%" r="70%">
+        <stop offset="0" stop-color="#fff8d0"/><stop offset="55%" stop-color="${d.c1}"/><stop offset="100%" stop-color="${d.c2}"/>
+      </radialGradient>
     </defs>
-    <ellipse cx="80" cy="148" rx="46" ry="9" fill="black" opacity="0.28"/>
-    <path opacity="${wingOpacity}" d="M56 70 C30 55 18 30 14 12 C34 16 52 30 60 52 Z" fill="url(#${gid}w)"/>
-    <path opacity="${wingOpacity}" d="M104 70 C130 55 142 30 146 12 C126 16 108 30 100 52 Z" fill="url(#${gid}w)"/>
-    <path d="M80 138 C48 138 34 112 36 90 C38 64 54 44 80 44 C106 44 122 64 124 90 C126 112 112 138 80 138 Z" fill="url(#${gid}b)"/>
-    <path d="M80 44 C88 30 100 22 112 22 C104 34 98 42 92 48 Z" fill="url(#${gid}b)"/>
-    <path d="M80 44 C72 30 60 22 48 22 C56 34 62 42 68 48 Z" fill="url(#${gid}b)"/>
-    ${hornShow? `<path d="M64 34 L58 18 L70 30 Z" fill="${d.c2}"/><path d="M96 34 L102 18 L90 30 Z" fill="${d.c2}"/>` : ''}
-    ${crownShow? `<path d="M64 20 L68 8 L74 18 L80 6 L86 18 L92 8 L96 20 Z" fill="#e8b84b" stroke="#a97a1f" stroke-width="1"/>` : ''}
-    <circle cx="70" cy="66" r="4.2" fill="#160d08"/>
-    <circle cx="90" cy="66" r="4.2" fill="#160d08"/>
-    <path d="M74 84 Q80 90 86 84" stroke="#160d08" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-    <path d="M36 96 C20 100 8 116 6 140 C22 136 34 122 40 106 Z" fill="url(#${gid}b)"/>
+
+    <ellipse cx="80" cy="155" rx="48" ry="8" fill="black" opacity="0.3"/>
+
+    <!-- tail -->
+    <path d="M60 132 C30 140 8 ${132-24*cfg.tail} 4 ${100-30*cfg.tail} C18 ${110-22*cfg.tail} 40 116 62 118 Z" fill="url(#${gid}b)"/>
+    ${cfg.spikes? `<path d="M18 ${112-24*cfg.tail} l-8 -8 l3 11 Z" fill="${d.c2}"/><path d="M32 118 l-7 -9 l2 11 Z" fill="${d.c2}"/>` : ''}
+
+    <!-- back legs -->
+    <path d="M60 118 C56 132 54 144 58 154 L72 154 C70 142 70 128 70 116 Z" fill="url(#${gid}b)"/>
+    <path d="M100 118 C104 132 106 144 102 154 L88 154 C90 142 90 128 90 116 Z" fill="url(#${gid}b)"/>
+    <path d="M56 154 h18 l-2 6 h-14 Z" fill="${d.c2}"/>
+    <path d="M86 154 h18 l-2 6 h-14 Z" fill="${d.c2}"/>
+
+    <!-- wings (behind body) -->
+    <g opacity="${cfg.wingOp}">
+      <path d="M58 76 C24 66 6 40 2 10 C28 12 52 26 64 54 C66 62 62 70 58 76 Z" fill="url(#${gid}wing)" stroke="${d.c2}" stroke-width="1" stroke-opacity="0.4"/>
+      <path d="M58 76 C40 58 28 36 18 18 M58 76 C44 62 34 46 26 32" stroke="${d.c2}" stroke-width="1" opacity="0.35" fill="none"/>
+      <path d="M102 76 C136 66 154 40 158 10 C132 12 108 26 96 54 C94 62 98 70 102 76 Z" fill="url(#${gid}wing)" stroke="${d.c2}" stroke-width="1" stroke-opacity="0.4"/>
+      <path d="M102 76 C120 58 132 36 142 18 M102 76 C116 62 126 46 134 32" stroke="${d.c2}" stroke-width="1" opacity="0.35" fill="none"/>
+    </g>
+
+    <!-- body -->
+    <path d="M80 148 C46 148 30 120 32 94 C34 64 52 40 80 40 C108 40 126 64 128 94 C130 120 114 148 80 148 Z" fill="url(#${gid}b)"/>
+    <path d="M80 148 C46 148 30 120 32 94 C34 64 52 40 80 40 C108 40 126 64 128 94 C130 120 114 148 80 148 Z" fill="url(#${gid}glow)"/>
+    <!-- belly -->
+    <path d="M80 134 C60 134 50 116 52 96 C54 78 64 66 80 66 C96 66 106 78 108 96 C110 116 100 134 80 134 Z" fill="url(#${gid}belly)"/>
+
+    <!-- front legs -->
+    <path d="M52 120 C46 132 44 142 48 150 L60 150 C60 138 60 128 62 118 Z" fill="url(#${gid}b)"/>
+    <path d="M108 120 C114 132 116 142 112 150 L100 150 C100 138 100 128 98 118 Z" fill="url(#${gid}b)"/>
+    <path d="M46 150 h16 l-2 5 h-12 Z" fill="${d.c2}"/>
+    <path d="M96 150 h16 l-2 5 h-12 Z" fill="${d.c2}"/>
+
+    <!-- back spikes -->
+    ${cfg.spikes? `<path d="M68 42 L64 26 L74 38 Z" fill="${d.c2}"/><path d="M80 38 L78 20 L88 36 Z" fill="${d.c2}"/><path d="M94 42 L96 26 L104 40 Z" fill="${d.c2}"/>` : ''}
+
+    <!-- frill / neck fins -->
+    ${cfg.frill? `<path d="M58 52 L48 44 L54 56 Z" fill="${d.c1}" opacity="0.8"/><path d="M102 52 L112 44 L106 56 Z" fill="${d.c1}" opacity="0.8"/>` : ''}
+
+    <!-- head -->
+    <path d="M80 30 C60 30 46 44 46 60 C46 76 62 86 80 86 C98 86 114 76 114 60 C114 44 100 30 80 30 Z" fill="url(#${gid}b)"/>
+    <path d="M80 30 C60 30 46 44 46 60 C46 76 62 86 80 86 C98 86 114 76 114 60 C114 44 100 30 80 30 Z" fill="url(#${gid}glow)"/>
+    <!-- snout -->
+    <path d="M80 78 C72 78 66 82 66 88 C66 94 72 96 80 96 C88 96 94 94 94 88 C94 82 88 78 80 78 Z" fill="url(#${gid}b)"/>
+    <ellipse cx="73" cy="89" rx="2.2" ry="1.6" fill="#160d08"/>
+    <ellipse cx="87" cy="89" rx="2.2" ry="1.6" fill="#160d08"/>
+
+    <!-- horns -->
+    ${cfg.horns? `<path d="M58 38 C50 28 48 16 52 6 C58 14 60 26 62 36 Z" fill="${d.c2}"/><path d="M102 38 C110 28 112 16 108 6 C102 14 100 26 98 36 Z" fill="${d.c2}"/>` : `<path d="M62 34 C58 28 58 22 60 16 C64 22 64 28 65 33 Z" fill="${d.c2}" opacity="0.85"/><path d="M98 34 C102 28 102 22 100 16 C96 22 96 28 95 33 Z" fill="${d.c2}" opacity="0.85"/>`}
+
+    <!-- crown for fully grown -->
+    ${cfg.crown? `<path d="M62 16 L66 2 L74 14 L80 0 L86 14 L94 2 L98 16 Z" fill="#e8b84b" stroke="#a97a1f" stroke-width="1"/><circle cx="80" cy="7" r="2.4" fill="#fff3c9"/>` : ''}
+
+    <!-- eyes -->
+    <ellipse cx="66" cy="58" rx="7" ry="8" fill="url(#${gid}eye)"/>
+    <ellipse cx="94" cy="58" rx="7" ry="8" fill="url(#${gid}eye)"/>
+    <ellipse cx="66" cy="58" rx="2.6" ry="3.2" fill="#160d08"/>
+    <ellipse cx="94" cy="58" rx="2.6" ry="3.2" fill="#160d08"/>
+    <ellipse cx="64" cy="55.5" rx="1.4" ry="1.6" fill="#fff" opacity="0.85"/>
+    <ellipse cx="92" cy="55.5" rx="1.4" ry="1.6" fill="#fff" opacity="0.85"/>
+
+    <!-- brow ridges -->
+    <path d="M58 50 Q66 44 74 49" stroke="${d.c2}" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/>
+    <path d="M86 49 Q94 44 102 50" stroke="${d.c2}" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/>
+
+    <!-- nostrils -->
+    <ellipse cx="76" cy="91" rx="1.3" ry="0.9" fill="#000" opacity="0.5"/>
+    <ellipse cx="84" cy="91" rx="1.3" ry="0.9" fill="#000" opacity="0.5"/>
   </svg>`;
 }
 
@@ -599,6 +860,10 @@ function renderHome(){
   const stageNameEl = $('#stageName');
   const dotsEl = $('#stageDots');
   const penaltyEl = $('#penaltyNote');
+  const badgeEl = $('#upgradeBadge');
+  badgeEl.innerHTML = isUpgraded()
+    ? `<span class="upgrade-badge"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M13 2 3 14h7l-1 8 11-14h-7l0-6Z"/></svg>Veteran Training — reps doubled, squats added</span>`
+    : '';
 
   if(!active){
     stageNameEl.textContent = 'No active egg';
@@ -624,14 +889,229 @@ function renderHome(){
       </button>
       <div class="round-text">
         <div class="round-label">${n}</div>
-        <div class="round-desc">${ROUTINE_LABEL}</div>
+        <div class="round-desc">${routineLabel()}</div>
       </div>
       <div class="round-exp">+${EXP_PER_ROUND} EXP</div>
     </div>
   `).join('');
   list.querySelectorAll('.round-card').forEach(card=>{
-    card.addEventListener('click', ()=> completeRound(parseInt(card.dataset.idx,10)));
+    card.addEventListener('click', ()=>{
+      const idx = parseInt(card.dataset.idx,10);
+      if(state.roundsToday[idx]) return;
+      openWorkout(idx);
+    });
   });
+}
+
+/* ============ WORKOUT MODE ============ */
+function getExerciseSet(){
+  const upgraded = isUpgraded();
+  const set = {
+    plank:   {key:'plank',   label:'Plank',              type:'timer',   duration: upgraded?120:60},
+    pushup:  {key:'pushup',  label:'Push-ups',           type:'counter', target: upgraded?20:10},
+    situp:   {key:'situp',   label:'Sit-ups',            type:'counter', target: upgraded?20:10},
+    bicycle: {key:'bicycle', label:'Bicycle Crunches',   type:'bicycle', target: upgraded?60:30},
+  };
+  if(upgraded){
+    set.squat = {key:'squat', label:'Squats', type:'counter', target:20};
+  }
+  return set;
+}
+let workout = null;
+
+function openWorkout(roundIdx){
+  const exercises = getExerciseSet();
+  workout = {
+    roundIdx, order:[], step:-1, exercises, totalSteps: Object.keys(exercises).length,
+    plankLeft: exercises.plank.duration, plankTimer:null, plankRunning:false,
+    counts:{}, bLeft:0, bRight:0, stream:null
+  };
+  for(const k in exercises) if(exercises[k].type==='counter') workout.counts[k] = 0;
+  $('#workoutOverlay').classList.add('open');
+  renderWorkout();
+}
+function closeWorkout(){
+  if(workout){
+    if(workout.plankTimer) clearInterval(workout.plankTimer);
+    if(workout.stream) workout.stream.getTracks().forEach(t=>t.stop());
+  }
+  workout = null;
+  $('#workoutOverlay').classList.remove('open');
+  $('#workoutSheet').innerHTML = '';
+}
+async function startCamera(videoEl){
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return false;
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}, audio:false});
+    if(!workout) { stream.getTracks().forEach(t=>t.stop()); return false; }
+    workout.stream = stream;
+    videoEl.srcObject = stream;
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+function cameraBlock(){
+  return `<div class="camera-wrap"><video id="camVideo" autoplay muted playsinline></video><div class="camera-off" id="camOff" style="display:none;">Camera preview unavailable on this device — continue below.</div></div>`;
+}
+function wireCamera(){
+  const videoEl = $('#camVideo');
+  if(!videoEl) return;
+  if(workout.stream){
+    videoEl.srcObject = workout.stream;
+  } else {
+    startCamera(videoEl).then(ok=>{
+      if(!ok && $('#camOff')){ $('#camOff').style.display='flex'; videoEl.style.display='none'; }
+    });
+  }
+}
+
+function renderWorkout(){
+  const sheet = $('#workoutSheet');
+  if(!workout) return;
+
+  if(workout.step === -1){
+    sheet.innerHTML = `
+      <div class="workout-head"><div class="sheet-title">Choose your order</div><button class="workout-close" id="workoutClose">${CLOSE_ICON}</button></div>
+      <div class="workout-body">
+        <div class="ex-sub">Tap all 4 exercises, in the order you want to do them.</div>
+        <div class="order-grid" id="orderGrid">
+          ${Object.values(workout.exercises).map(ex=>`<div class="order-chip" data-key="${ex.key}"><div class="order-num"></div>${ex.label}</div>`).join('')}
+        </div>
+        <button class="big-btn" id="orderConfirm" disabled>Start Workout</button>
+      </div>
+    `;
+    $('#workoutClose').addEventListener('click', closeWorkout);
+    const grid = $('#orderGrid');
+    grid.querySelectorAll('.order-chip').forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        const key = chip.dataset.key;
+        const idx = workout.order.indexOf(key);
+        if(idx>=0) workout.order.splice(idx,1);
+        else workout.order.push(key);
+        renderWorkout();
+      });
+    });
+    workout.order.forEach((key,i)=>{
+      const chip = grid.querySelector(`.order-chip[data-key="${key}"]`);
+      if(chip){ chip.classList.add('picked'); const num=chip.querySelector('.order-num'); num.style.display='flex'; num.textContent = i+1; }
+    });
+    $('#orderConfirm').disabled = workout.order.length !== workout.totalSteps;
+    $('#orderConfirm').addEventListener('click', ()=>{
+      if(workout.order.length===workout.totalSteps){ workout.step = 0; renderWorkout(); }
+    });
+    return;
+  }
+
+  const key = workout.order[workout.step];
+  const ex = workout.exercises[key];
+  let bodyHtml = '';
+
+  if(ex.type === 'timer'){
+    bodyHtml = `
+      ${cameraBlock()}
+      <div class="ex-title">${ex.label}</div>
+      <div class="ex-sub">Get into plank position, then tap Start. The 60s timer runs continuously — pause any time and resume where you left off.</div>
+      <div class="timer-num" id="plankTimerNum">${workout.plankLeft}s</div>
+      <button class="big-btn" id="plankStart">${workout.plankRunning ? 'Pause' : (workout.plankLeft<60 ? 'Resume' : 'Start Plank Timer')}</button>
+      <button class="big-btn" id="plankSkip" style="background:rgba(255,255,255,0.06); color:var(--parchment);" ${workout.plankLeft>0?'disabled':''}>Continue</button>
+    `;
+  } else if(ex.type === 'counter'){
+    const count = workout.counts[key];
+    bodyHtml = `
+      ${cameraBlock()}
+      <div class="ex-title">${ex.label}</div>
+      <div class="ex-sub">Tap the + button once for every rep you complete.</div>
+      <div class="counter-row">
+        <button class="counter-btn" id="counterMinus">−</button>
+        <div class="counter-num" id="counterNum">${count} / ${ex.target}</div>
+        <button class="counter-btn" id="counterPlus">+</button>
+      </div>
+      <button class="big-btn" id="counterDone" ${count<ex.target?'disabled':''}>Continue</button>
+    `;
+  } else if(ex.type === 'bicycle'){
+    bodyHtml = `
+      ${cameraBlock()}
+      <div class="ex-title">${ex.label}</div>
+      <div class="ex-sub">Left elbow to right knee counts Right. Right elbow to left knee counts Left. ${ex.target} needed on each side.</div>
+      <div class="bicycle-row">
+        <div class="bicycle-side">
+          <div class="bicycle-side-label">LEFT</div>
+          <div class="counter-num" id="bLeftNum">${workout.bLeft} / ${ex.target}</div>
+          <button class="counter-btn" id="bLeftPlus">+</button>
+        </div>
+        <div class="bicycle-side">
+          <div class="bicycle-side-label">RIGHT</div>
+          <div class="counter-num" id="bRightNum">${workout.bRight} / ${ex.target}</div>
+          <button class="counter-btn" id="bRightPlus">+</button>
+        </div>
+      </div>
+      <button class="big-btn" id="bicycleDone" ${(workout.bLeft<ex.target||workout.bRight<ex.target)?'disabled':''}>Continue</button>
+    `;
+  }
+
+  sheet.innerHTML = `
+    <div class="workout-head"><div class="sheet-title">Step ${workout.step+1} of ${workout.totalSteps}</div><button class="workout-close" id="workoutClose">${CLOSE_ICON}</button></div>
+    <div class="workout-body">${bodyHtml}</div>
+  `;
+  $('#workoutClose').addEventListener('click', closeWorkout);
+  wireCamera();
+
+  if(ex.type === 'timer'){
+    $('#plankStart').addEventListener('click', ()=>{
+      if(workout.plankRunning){
+        workout.plankRunning = false;
+        clearInterval(workout.plankTimer);
+        renderWorkout();
+      } else {
+        workout.plankRunning = true;
+        workout.plankTimer = setInterval(()=>{
+          if(!workout) return;
+          workout.plankLeft -= 1;
+          const numEl = $('#plankTimerNum');
+          if(numEl) numEl.textContent = workout.plankLeft + 's';
+          if(workout.plankLeft <= 0){
+            clearInterval(workout.plankTimer);
+            workout.plankRunning = false;
+            advanceWorkoutStep();
+          }
+        }, 1000);
+        renderWorkout();
+      }
+    });
+    const skipBtn = $('#plankSkip');
+    if(skipBtn) skipBtn.addEventListener('click', ()=>{ if(workout.plankLeft<=0) advanceWorkoutStep(); });
+  } else if(ex.type === 'counter'){
+    $('#counterPlus').addEventListener('click', ()=>{
+      workout.counts[key] = Math.min(ex.target, workout.counts[key]+1);
+      renderWorkout();
+    });
+    $('#counterMinus').addEventListener('click', ()=>{
+      workout.counts[key] = Math.max(0, workout.counts[key]-1);
+      renderWorkout();
+    });
+    $('#counterDone').addEventListener('click', ()=>{
+      if(workout.counts[key] >= ex.target) advanceWorkoutStep();
+    });
+  } else if(ex.type === 'bicycle'){
+    $('#bLeftPlus').addEventListener('click', ()=>{ workout.bLeft = Math.min(ex.target, workout.bLeft+1); renderWorkout(); });
+    $('#bRightPlus').addEventListener('click', ()=>{ workout.bRight = Math.min(ex.target, workout.bRight+1); renderWorkout(); });
+    $('#bicycleDone').addEventListener('click', ()=>{
+      if(workout.bLeft>=ex.target && workout.bRight>=ex.target) advanceWorkoutStep();
+    });
+  }
+}
+
+function advanceWorkoutStep(){
+  if(!workout) return;
+  workout.step += 1;
+  if(workout.step >= workout.totalSteps){
+    const roundIdx = workout.roundIdx;
+    closeWorkout();
+    completeRound(roundIdx);
+  } else {
+    renderWorkout();
+  }
 }
 
 function renderShop(){
@@ -744,12 +1224,26 @@ document.querySelectorAll('.tab-btn').forEach(btn=>{
 });
 $('#overlay').addEventListener('click', (e)=>{ if(e.target.id==='overlay') closePanel(); });
 
+$('#resetBtn').addEventListener('click', ()=> $('#confirmOverlay').classList.add('open'));
+$('#confirmCancel').addEventListener('click', ()=> $('#confirmOverlay').classList.remove('open'));
+$('#confirmDanger').addEventListener('click', ()=>{
+  const acc = accountsStore.accounts[accountsStore.activeId];
+  acc.data = freshAccountData();
+  state = acc.data;
+  saveAccounts();
+  $('#confirmOverlay').classList.remove('open');
+  render();
+  showToast('Progress reset for this account.');
+});
+$('#confirmOverlay').addEventListener('click', (e)=>{ if(e.target.id==='confirmOverlay') $('#confirmOverlay').classList.remove('open'); });
+
 rollDay();
 if(state.roundsToday.every(Boolean)){
   state.roundsToday = [false,false,false];
   state.anyCompletionToday = true;
 }
 render();
+renderAccounts();
 saveState();
 })();
 </script>
